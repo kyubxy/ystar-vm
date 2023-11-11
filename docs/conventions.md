@@ -1,0 +1,35 @@
+# Conventions
+
+This probably exists more for me than anyone else
+
+## Pass by Reference
+
+When modifying data that is passed by reference in a function, we use 
+C#-esque naming conventions. That is, if the data is going to be 
+overwritten/allocated by the callee, the argument name is suffixed with `_o` 
+(analogous to C#'s `out` keyword). If the callee is expecting the data to 
+be allocated by the caller and is only mutating the fields,
+the argument name is suffixed with `_r` (analogous to C#'s `ref` keyword).
+
+Examples
+```c
+void f(struct s *val_o)
+{
+    // argument is overwritten and allocated by the function
+    val_o = malloc(sizeof(struct s)); 
+}
+
+void g(struct s *val_r)
+{
+    // argument is modified and might throw a segmentation fault
+    // if not already allocated
+    val_r->field = 1;
+}
+```
+
+## Structs
+
+All members in all structs are considered private and should only be modified 
+by the implementing module (eg. only the `CPU` module can modify `struct CPU`). 
+The only exception being structs defined with `typedef` (eg. `RuntimeArgs`).
+In general, never modify struct members directly and use helpers where available.
