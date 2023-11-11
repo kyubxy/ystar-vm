@@ -26,10 +26,10 @@ void intercept_signals()
 {
     signal(SIGINT, sighandler);
     signal(SIGTERM, sighandler);
-    #ifndef WIN32
+#ifndef WIN32
     signal(SIGKILL, sighandler);
     signal(SIGQUIT, sighandler);
-    #endif
+#endif
 }
 
 int main(char **args, int argc)
