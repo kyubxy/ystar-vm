@@ -14,12 +14,12 @@ struct Stack
 {
     struct ElemProp T;
     unsigned int count; // TODO: maybe make 32 bit
-    size_t size;
+    size_t size; // TODO: replace size with sp
     void *elems;
 };
 
 // initialise the stack on the heap
-int stack_init(struct Stack *stack, struct ElemProp T, size_t stackSize);
+int stack_init(struct Stack *stack_o, struct ElemProp T, size_t stackSize);
 
 // push item to top of stack
 int stack_push(struct Stack *stack, void *src);

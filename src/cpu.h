@@ -8,7 +8,7 @@
 #include "errcodes.h"
 #include "runtime.h"
 
-#define M_FRAMESIZE 16
+#define M_STACKFRAMESIZE 64
 #define M_STACKSIZE 8
 
 struct CPU

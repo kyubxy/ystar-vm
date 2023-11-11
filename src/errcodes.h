@@ -9,6 +9,9 @@
 #define E_NULLPTR 33
 
 // cpu
+#define E_EXIT 64
+#define E_SF_UNDERFLOW 65
+#define E_SF_OVERFLOW 65
 
 // stack
 #define E_STACKOVERFLOW 96

@@ -1,0 +1,20 @@
+% test basic stack operations
+PUSH 9
+PUSH 10
+% 9 10
+POP
+% 9
+PUSH 11
+PUSH 12
+% 9 11 12
+DUP
+DUP
+% 9 11 12 12 12
+POP
+POP
+POP
+POP
+POP
+% empty
+POP
+% error

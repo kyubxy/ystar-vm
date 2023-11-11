@@ -7,10 +7,11 @@ int cpu_init(struct CPU *cpu, RuntimeArgs args)
     cpu = malloc(sizeof(struct CPU));
     cpu->PC = 0;
     cpu->program = args.program;
+
     // initialise the stacks
     int e = 0;
-    e = stack_init(cpu->frames, (struct ElemProp){sizeof(struct Frame), 
-            &frame_free}, M_FRAMESIZE);
+    e = stack_init(cpu->frames, (struct ElemProp){sizeof(struct Frame),
+            &frame_free}, M_STACKFRAMESIZE);
     if (e != E_OK)
     {
         sprintf(LOG_E, "CPU: failed to initialise stackframe");
@@ -23,6 +24,12 @@ int cpu_init(struct CPU *cpu, RuntimeArgs args)
         sprintf(LOG_E, "CPU: failed to initialise stack");
         return e;
     }
+
+    // push the initial frame
+    struct Frame *firstFrame;
+    frame_init(firstFrame, NULL);
+    stack_push(cpu->frames, firstFrame);
+
     cpu->running = true;
     return E_OK;
 }
@@ -40,10 +47,10 @@ int cpu_pop(struct CPU *cpu, uint32_t *dest)
 
 int cpu_step(struct CPU *cpu)
 {
-    struct Inst instr;
-    int dec = instr_decode(&instr, cpu);
-    if (dec != E_OK) return dec; 
-    return instr_execute(&instr, cpu);
+    uint32_t opcode;
+    int fet = instr_fetch(&opcode, cpu);
+    if (fet != E_OK) return fet; 
+    return instr_execute(&opcode, cpu);
 }
 
 int cpu_free(struct CPU *cpu)

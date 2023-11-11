@@ -5,12 +5,15 @@
 #define CAP(s) ((s)->count*(s)->T.size)
 #define TOP(s) ((s) + CAP(s))
 
-int stack_init(struct Stack *stack, struct ElemProp T, size_t stackSize)
+int stack_init(struct Stack *stack_o, struct ElemProp T, size_t stackSize)
 {
-    stack = malloc(stackSize);
-    stack->count = 0;
-    stack->size = stackSize;
-    stack->T = T;
+    stack_o = malloc(stackSize);
+    if (stack_o == NULL)
+        return -E_SYSCALL;
+    stack_o->count = 0;
+    stack_o->size = stackSize;
+    stack_o->T = T;
+    return E_OK;
 }
 
 int stack_push(struct Stack *stack, void *src)
