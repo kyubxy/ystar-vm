@@ -152,21 +152,13 @@ Instr table[] = {
 int instr_fetch(uint32_t *opcode_r, struct CPU *cpu)
 {
     *opcode_r = cpu->program[cpu->PC];
-    cpu->PC++;
+    cpu->PC += table[*opcode_r].argc + 1;
     return E_OK;
 }
 
 int instr_execute(uint32_t opcode, struct CPU *cpu)
 {
-    // read the instruction definition
-    Instr def = table[opcode];
-    int argc = def.argc;
-
-    // read the args
-    uint32_t args[argc];
-    for (int i = 0; i < argc; i++)
-        args[i] = cpu->program[cpu->PC + i];
-
     // execute the instruction
-    return def.execute(cpu, args);
+    return table[opcode]
+        .execute(cpu, cpu->program + cpu->PC);
 }
