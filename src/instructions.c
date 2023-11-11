@@ -4,6 +4,12 @@
 
 // *yprime instruction table and definitions*
 
+int noop(struct CPU *cpu, uint32_t *args)
+{
+    asm("nop"); 
+    return E_OK;
+}
+
 int exit(struct CPU *cpu, uint32_t *args)
 {
     return E_EXIT; // we keep this positive to indicate an expected outcome
