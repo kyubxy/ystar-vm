@@ -31,4 +31,10 @@ int cpu_step(struct CPU *cpu);
 int cpu_push(struct CPU *cpu, uint32_t value);
 int cpu_pop(struct CPU *cpu, uint32_t *dest);
 
+// modify the CPU's frame stack - see also the note on stack semantics
+// in cpu.c
+int cpu_sf_current(struct CPU *cpu, struct Frame *dest);
+int cpu_sf_pushf(struct CPU *cpu);
+int cpu_sf_popf(struct CPU *cpu);
+
 #endif /* CPU_H */

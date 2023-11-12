@@ -25,15 +25,41 @@ int cpu_init(struct CPU *cpu, RuntimeArgs args)
         return e;
     }
 
-    // push the initial frame
-    struct Frame *firstFrame;
-    frame_init(firstFrame, NULL);
-    stack_push(cpu->frames, firstFrame);
-
+    cpu_sf_pushf(cpu); // push the initial frame
     cpu->running = true;
     return E_OK;
 }
 
+// NOTE: stack frame semantics don't exactly line up
+//      with conventional stack semantics.
+//      ie. popping doesn't return the top value.
+//      we indicate this with the f suffix
+
+int cpu_sf_current(struct CPU *cpu, struct Frame *dest)
+{
+    return stack_peek(cpu->frames, dest);
+}
+
+// this thing sets the return address to the current
+// PC, idk if this is a good idea or not
+int cpu_sf_pushf(struct CPU *cpu)
+{
+    struct Frame *fr;
+    frame_init(fr, cpu->PC);
+    return stack_push(cpu->frames, fr);
+}
+
+int cpu_sf_popf(struct CPU *cpu)
+{
+    struct Frame *f;
+    if (stack_pop(cpu->stack, f) == -E_STACKEMPTY)
+        return -E_SF_UNDERFLOW;
+    frame_free(f);
+    return E_OK;
+}
+
+// main stack semantics *do* line up with
+// conventional stack semantics which is bing chilling
 
 int cpu_push(struct CPU *cpu, uint32_t value)
 {

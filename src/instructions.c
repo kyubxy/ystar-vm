@@ -67,29 +67,22 @@ int jmpc(struct CPU *cpu, uint32_t *args)
     cpu_pop(cpu, &cond);
     if (cond)
         cpu->PC = args[0];
-        return E_OK;
+    return E_OK;
 }
 
 int call(struct CPU *cpu, uint32_t *args)
 {
-    struct Frame *frame;
-    int fi = frame_init(frame, cpu->PC);
-    if (fi != E_OK)
-        return fi;
-    if(stack_push(cpu->stack, frame) == -E_STACKOVERFLOW)
-        return -E_SF_OVERFLOW;
-    cpu->PC = args[0];
+    cpu_sf_pushf(cpu);
+    cpu->PC = args[0]; // jump to specified instr location
     return E_OK;
 }
 
 int ret(struct CPU *cpu, uint32_t *args)
 {
-    struct Frame *frame;
-    if (stack_pop(cpu->stack, frame) == -E_STACKEMPTY)
-        return -E_SF_UNDERFLOW;
-    cpu->PC = frame->returnaddr;
-    frame_free(frame);
-    return E_OK;
+    struct Frame *fr;
+    cpu_sf_current(cpu, fr);
+    cpu->PC = fr->returnaddr; // jump back to old location
+    return cpu_sf_popf(cpu);
 }
 
 
@@ -158,6 +151,7 @@ Instr table[] = {
 int instr_fetch(uint32_t *opcode_r, struct CPU *cpu)
 {
     *opcode_r = cpu->program[cpu->PC];
+    // TODO: PC inc is wrong
     cpu->PC += table[*opcode_r].argc + 1;
     return E_OK;
 }
