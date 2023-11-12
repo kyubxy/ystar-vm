@@ -27,10 +27,8 @@ int pop(struct CPU *cpu, uint32_t *args)
 
 int dup(struct CPU *cpu, uint32_t *args)
 {
-    // TODO: try optimising by including a specialised dup instruction
-    int x = 0;
-    cpu_pop(cpu, &x);
-    cpu_push(cpu, x);
+    int x;
+    cpu_peek(cpu, &x);
     cpu_push(cpu, x);
     return E_OK;
 }

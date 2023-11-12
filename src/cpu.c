@@ -30,6 +30,22 @@ int cpu_init(struct CPU *cpu, RuntimeArgs args)
     return E_OK;
 }
 
+int cpu_step(struct CPU *cpu)
+{
+    uint32_t opcode;
+    int fet = instr_fetch(&opcode, cpu);
+    if (fet != E_OK) return fet; 
+    return instr_execute(&opcode, cpu);
+}
+
+int cpu_free(struct CPU *cpu)
+{
+    cpu->running = false;
+    stack_free(cpu->frames);
+    stack_free(cpu->stack);
+    free(cpu);
+}
+
 // NOTE: stack frame semantics don't exactly line up
 //      with conventional stack semantics.
 //      ie. popping doesn't return the top value.
@@ -71,18 +87,7 @@ int cpu_pop(struct CPU *cpu, uint32_t *dest)
     return stack_pop(cpu->stack, dest);
 }
 
-int cpu_step(struct CPU *cpu)
+int cpu_peek(struct CPU *cpu, uint32_t *dest)
 {
-    uint32_t opcode;
-    int fet = instr_fetch(&opcode, cpu);
-    if (fet != E_OK) return fet; 
-    return instr_execute(&opcode, cpu);
-}
-
-int cpu_free(struct CPU *cpu)
-{
-    cpu->running = false;
-    stack_free(cpu->frames);
-    stack_free(cpu->stack);
-    free(cpu);
+    return stack_peek(cpu->stack, dest);
 }
