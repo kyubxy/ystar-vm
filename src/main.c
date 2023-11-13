@@ -1,7 +1,14 @@
 #include <signal.h>
+#include <stdio.h>
 #include "runtime.h"
 
 static struct RuntimeState *state;
+
+void cleanup(int ec)
+{
+    rt_free(state);
+    printf("Terminated with exit code %i\n", ec);
+}
 
 void sighandler(int signum)
 {
@@ -16,12 +23,6 @@ void sighandler(int signum)
     }
 }
 
-void cleanup(int ec)
-{
-    rt_free(state);
-    printf("Terminated with exit code %i\n", ec);
-}
-
 void intercept_signals()
 {
     signal(SIGINT, sighandler);
@@ -32,7 +33,7 @@ void intercept_signals()
 #endif
 }
 
-int main(char **args, int argc)
+int main(int argc, char **args)
 {
     // signals
     intercept_signals();

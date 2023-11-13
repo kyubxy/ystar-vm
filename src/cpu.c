@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <stdio.h>
 #include "cpu.h"
 #include "debug/journal.h"
 #include "instructions.h"
@@ -35,7 +37,7 @@ int cpu_step(struct CPU *cpu)
     uint32_t opcode;
     int fet = instr_fetch(&opcode, cpu);
     if (fet != E_OK) return fet; 
-    return instr_execute(&opcode, cpu);
+    return instr_execute(opcode, cpu);
 }
 
 int cpu_free(struct CPU *cpu)

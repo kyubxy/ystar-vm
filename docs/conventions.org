@@ -1,8 +1,8 @@
-# Conventions
+#+TITLE: Conventions
 
 This probably exists more for me than anyone else
 
-## Pass by Reference
+* Pass by Reference
 
 When modifying data that is passed by reference in a function, we use 
 C#-esque naming conventions. That is, if the data is going to be 
@@ -12,11 +12,11 @@ be allocated by the caller and is only mutating the fields,
 the argument name is suffixed with `_r` (analogous to C#'s `ref` keyword).
 
 Examples
-```c
+#+BEGIN_SRC C
 void f(struct s *val_o)
 {
     // argument is overwritten and allocated by the function
-    val_o = malloc(sizeof(struct s)); 
+    val_o = malloc(sizeof(struct s));
 }
 
 void g(struct s *val_r)
@@ -25,11 +25,11 @@ void g(struct s *val_r)
     // if not already allocated
     val_r->field = 1;
 }
-```
+#+END_SRC
 
-## Structs
+* Structs
 
 All members in all structs are considered private and should only be modified 
-by the implementing module (eg. only the `CPU` module can modify `struct CPU`). 
-The only exception being structs defined with `typedef` (eg. `RuntimeArgs`).
+by the implementing module (eg. only the ~CPU~ module can modify ~struct CPU~).
+The only exception being structs defined with ~typedef~ (eg. ~RuntimeArgs~).
 In general, never modify struct members directly and use helpers where available.
