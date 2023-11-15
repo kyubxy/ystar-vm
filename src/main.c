@@ -43,12 +43,8 @@ int main(int argc, char **args)
 
     };
 
-    RuntimeArgs rargs;
-    rargs.program = prog;
-    rargs.threadcount = 1;
-
     // run the program
-    rt_init(rargs, state);
+    rt_init(prog, state);
     int ec = rt_run(state);
 
     // cleanup and exit

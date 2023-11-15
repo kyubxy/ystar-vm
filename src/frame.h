@@ -15,9 +15,9 @@ struct Frame
     uint32_t *ptr;
 };
 
-int frame_init(struct Frame *frame_o, uint32_t retAddr)
-int frame_get_var(struct frame *frame, int addr, uint32_t *dest);
-int frame_set_var(struct frame *frame, int addr, uint32_t value);
+int frame_init(struct Frame *frame_o, uint32_t retAddr);
+int frame_get_var(struct Frame *frame, int addr, uint32_t *dest);
+int frame_set_var(struct Frame *frame, int addr, uint32_t value);
 int frame_free(void *frame);
 
 #endif /* FRAME_H */

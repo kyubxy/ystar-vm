@@ -1,5 +1,4 @@
 #include "instructions.h"
-#include "cpu.h"
 #include "errcodes.h"
 
 // *yprime instruction table and definitions*
@@ -10,7 +9,7 @@ int noop(struct CPU *cpu, uint32_t *args)
     return E_OK;
 }
 
-int exit(struct CPU *cpu, uint32_t *args)
+int halt(struct CPU *cpu, uint32_t *args)
 {
     return E_EXIT; // we keep this positive to indicate an expected outcome
 }
@@ -61,7 +60,7 @@ int jmp(struct CPU *cpu, uint32_t *args)
 
 int jmpc(struct CPU *cpu, uint32_t *args)
 {
-    bool cond = false;
+    int cond = false;
     cpu_pop(cpu, &cond);
     if (cond)
         cpu->PC = args[0];
@@ -143,7 +142,7 @@ Instr table[] = {
     { "PUSH", 1, &push },
     { "POP",  0, &pop },
     { "ADD",  0, &add },
-    { "EXIT", 0, &exit },
+    { "HALT", 0, &halt },
 };
 
 int instr_fetch(uint32_t *opcode_r, struct CPU *cpu)

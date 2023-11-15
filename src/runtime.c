@@ -1,13 +1,14 @@
+#include <stdlib.h>
 #include "runtime.h"
-#include "debug/journal.h"
+#include "journal.h"
 #include "cpu.h"
 
-int rt_init(RuntimeArgs args, struct RuntimeState *s)
+int rt_init(uint32_t *program, struct RuntimeState *s)
 {
     debug_init("runtime.log");
     sprintf(LOG_I, "Runtime - rt_init: initialised logger\n");
     s = malloc(sizeof(struct RuntimeState));
-    cpu_init(s->cpu, args);
+    cpu_init(s->cpu, program);
     sprintf(LOG_I, "Runtime - rt_init: logging successful\n");
 }
 

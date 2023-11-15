@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "frame.h"
 #include "errcodes.h"
 
@@ -12,16 +13,16 @@ int frame_init(struct Frame *frame, uint32_t retAddr)
     return E_OK;
 }
 
-int frame_get_var(struct Frame *Frame, int addr, uint32_t *dest)
+int frame_get_var(struct Frame *frame, int addr, uint32_t *dest)
 {
     *dest = frame->ptr[addr];
     return E_OK;
 }
 
-int frame_set_var(struct Frame *Frame, int addr, uint32_t value)
+int frame_set_var(struct Frame *frame, int addr, uint32_t value)
 {
-    int cpy = memcpy(frame->ptr[addr], &value, sizeof(uint32_t));
-    return cpy == 0 ? E_OK : -E_SYSCALL;
+    memcpy(frame->ptr[addr], &value, sizeof(uint32_t));
+    return E_OK;
 }
 
 int frame_free(void *frame)

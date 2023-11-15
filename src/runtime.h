@@ -3,18 +3,14 @@
 
 #include "cpu.h"
 
-typedef struct RuntimeArgs
-{
-    uint32_t *program;
-    int threadcount; // TODO:
-} RuntimeArgs;
-
 struct RuntimeState
 {
     struct CPU *cpu;
 };
 
-int rt_init(RuntimeArgs args, struct RuntimeState *s);
+// TODO: replace the program pointer with more program args
+//  eg. thread count etc
+int rt_init(uint32_t *program, struct RuntimeState *s);
 int rt_run(struct RuntimeState *s);
 int rt_free(struct RuntimeState *s);
 

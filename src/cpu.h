@@ -21,7 +21,7 @@ struct CPU
 };
 
 // create/destroy
-int cpu_init(struct CPU *cpu, RuntimeArgs args);
+int cpu_init(struct CPU *cpu, uint32_t *program);
 int cpu_free(struct CPU *cpu);
 
 // execute one instruction on the CPU
@@ -30,6 +30,7 @@ int cpu_step(struct CPU *cpu);
 // modify the CPU's main stack
 int cpu_push(struct CPU *cpu, uint32_t value);
 int cpu_pop(struct CPU *cpu, uint32_t *dest);
+int cpu_peek(struct CPU *cpu, uint32_t *dest);
 
 // modify the CPU's frame stack - see also the note on stack semantics
 // in cpu.c

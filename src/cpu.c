@@ -1,14 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "cpu.h"
-#include "debug/journal.h"
+#include "journal.h"
 #include "instructions.h"
 
-int cpu_init(struct CPU *cpu, RuntimeArgs args)
+int cpu_init(struct CPU *cpu, uint32_t *program)
 {
     cpu = malloc(sizeof(struct CPU));
     cpu->PC = 0;
-    cpu->program = args.program;
+    cpu->program = program;
 
     // initialise the stacks
     int e = 0;
