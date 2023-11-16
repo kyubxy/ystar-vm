@@ -1,17 +1,19 @@
 CFILES   = $(wildcard *.c)
-OBJFILES = $(CFILES:.c=.o)
+OBJDIR   = obj
+OBJFILES = $(addprefix $(OBJDIR)/, $(CFILES:.c=.o))
 TARGET   = yvc
-
-ODIR = obj
 
 CC = gcc
 
 $(TARGET): $(OBJFILES)
-	$(CC) -o $@ $(ODIR)/$^
+	$(CC) -o $@ $^
 
-%.o: %.c
-	$(CC) -c -o $(ODIR)/$@ $^
+$(OBJDIR)/%.o: %.c | $(OBJDIR)
+	$(CC) -c -o $@ $<
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
 
 .PHONY: clean
 clean:
-	rm -f $(OBJFILES) $(TARGET)
+	rm -rf $(OBJDIR) $(TARGET)

@@ -38,6 +38,7 @@ int main(int argc, char **args)
     // signals
     intercept_signals();
 
+/*
     // parse args
     uint32_t prog[] = {
 
@@ -50,4 +51,6 @@ int main(int argc, char **args)
     // cleanup and exit
     cleanup(ec);
     return ec;
+*/
+
 }

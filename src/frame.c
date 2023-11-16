@@ -21,7 +21,9 @@ int frame_get_var(struct Frame *frame, int addr, uint32_t *dest)
 
 int frame_set_var(struct Frame *frame, int addr, uint32_t value)
 {
+    /*
     memcpy(frame->ptr[addr], &value, sizeof(uint32_t));
+*/
     return E_OK;
 }
 
