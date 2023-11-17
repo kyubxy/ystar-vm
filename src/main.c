@@ -1,5 +1,6 @@
 #include <signal.h>
 #include <stdio.h>
+#include <assert.h>
 #include "runtime.h"
 
 static struct RuntimeState *state;
@@ -12,6 +13,7 @@ void cleanup(int ec)
 
 void sighandler(int signum)
 {
+    // TODO: actually test whether this thing handles signals
     switch(signum)
     {
         case SIGINT:
@@ -38,19 +40,20 @@ int main(int argc, char **args)
     // signals
     intercept_signals();
 
-/*
     // parse args
     uint32_t prog[] = {
-
+        0 // signle noop
     };
 
+    // initialise the program
+    state = rt_init(prog);
+    assert(state != NULL);
+
     // run the program
-    rt_init(prog, state);
-    int ec = rt_run(state);
+    //int ec = rt_run(state);
 
     // cleanup and exit
+    int ec = 0;
     cleanup(ec);
     return ec;
-*/
-
 }

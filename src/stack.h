@@ -4,31 +4,31 @@
 #include <stdint.h>
 #include <stddef.h>
 
-struct ElemProp
-{
-    size_t size;
-    int(*free)(void *x);
-};
-
 struct Stack
 {
-    struct ElemProp T;
-    unsigned int count; // TODO: maybe make 32 bit
-    size_t size; // TODO: replace size with sp
-    void *elems;
+    size_t T_size;  // size of each block
+    void *SP;       // pointer to the end of the topmost block
 };
 
-// initialise the stack on the heap
-int stack_init(struct Stack *stack_o, struct ElemProp T, size_t stackSize);
+// note that this stack *contiguously stores the actual
+// data, not just pointers to data*
+// this is basically just a stack based heap allocator
 
-// push item to top of stack
-int stack_push(struct Stack *stack, void *src);
+// initialise the stack on the heap
+struct Stack *stack_init(size_t T_size, size_t stackSize);
+
+// push memory to top of stack
+// returns the next free memory block on the stack
+void *stack_push(struct Stack *stack);
 
 // remove topmost item
-int stack_pop(struct Stack *stack, void *dest);
+// popping from the stack means the stack *no longer owns
+// the data*
+void stack_pop(struct Stack *stack, void *dest);
 
 // acquire topmost item
-int stack_peek(struct Stack *stack, void *dest);
+// unlike pop, peeking means the stack still owns the data
+void *stack_peek(struct Stack *stack);
 
 // get total number of items currently in stack
 int stack_count(struct Stack *stack);

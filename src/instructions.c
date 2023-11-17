@@ -139,6 +139,7 @@ typedef struct Instr
 
 // **instruction set**
 Instr table[] = {
+    { "NOOP", 0, &noop },
     { "PUSH", 1, &push },
     { "POP",  0, &pop },
     { "ADD",  0, &add },

@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "cpu.h"
-#include "journal.h"
 #include "instructions.h"
 
 int cpu_init(struct CPU *cpu, uint32_t *program)
@@ -11,23 +10,25 @@ int cpu_init(struct CPU *cpu, uint32_t *program)
     cpu->program = program;
 
     // initialise the stacks
+    /*
     int e = 0;
     e = stack_init(cpu->frames, (struct ElemProp){sizeof(struct Frame),
             &frame_free}, M_STACKFRAMESIZE);
     if (e != E_OK)
     {
-        sprintf(LOG_E, "CPU: failed to initialise stackframe");
+        printf("CPU: failed to initialise stackframe");
         return e;
     }
     e = stack_init(cpu->stack, (struct ElemProp){ sizeof(uint32_t), NULL }, 
             M_STACKSIZE);
     if (e != E_OK)
     {
-        sprintf(LOG_E, "CPU: failed to initialise stack");
+        printf("CPU: failed to initialise stack");
         return e;
     }
 
     cpu_sf_pushf(cpu); // push the initial frame
+    */
     cpu->running = true;
     return E_OK;
 }

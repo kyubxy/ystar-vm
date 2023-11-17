@@ -1,7 +1,7 @@
 CFILES   = $(wildcard *.c)
 OBJDIR   = obj
 OBJFILES = $(addprefix $(OBJDIR)/, $(CFILES:.c=.o))
-TARGET   = yvc
+TARGET   = yvm
 
 CC = gcc
 

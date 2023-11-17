@@ -1,3 +1,4 @@
 yvm
 obj/
 .ccls-cache/
+*.o
