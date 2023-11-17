@@ -3,8 +3,6 @@
 #include <sys/mman.h>
 #include "stack.h"
 
-#include <stdio.h>
-
 #define BASE(stack) ((stack)+sizeof(struct Stack))
 
 void *get_next_block(struct Stack *s)
