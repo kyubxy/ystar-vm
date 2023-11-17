@@ -1,35 +1,36 @@
+#include <sys/mman.h>
+#include <stddef.h>
 #include <stdlib.h>
-#include <string.h>
 #include "frame.h"
-#include "errcodes.h"
 
-int frame_init(struct Frame *frame, uint32_t retAddr)
+// some pointer shitfuckery
+#define GET(frame, addr) ((uint8_t*)((void*)frame->payload + addr))
+
+// places the frame at the specific location
+bool frame_init(struct Frame *frame_r, size_t size, ylong instlinkaddr)
 {
-    frame = malloc(sizeof(struct Frame));
-    frame->ptr = malloc(K_FRAMESIZE * 1000);
-    if (frame == NULL || frame->ptr == NULL)
-        return -E_SYSCALL;
-    frame->returnaddr = retAddr;
-    return E_OK;
+    frame_r->LR = instlinkaddr;
+    frame_r->size = size;
+    frame_r->payload = (struct Frame*)mmap(NULL, size, PROT_READ | PROT_WRITE, 
+        MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
+    return true;
 }
 
-int frame_get_var(struct Frame *frame, int addr, uint32_t *dest)
+uint8_t frame_get_var(struct Frame *frame, ylong addr)
 {
-    *dest = frame->ptr[addr];
-    return E_OK;
+    return *GET(frame, addr); 
 }
 
-int frame_set_var(struct Frame *frame, int addr, uint32_t value)
+bool frame_set_var(struct Frame *frame, ylong addr, ybyte value)
 {
-    /*
-    memcpy(frame->ptr[addr], &value, sizeof(uint32_t));
-*/
-    return E_OK;
+    if (addr > (size_t)(frame->payload + frame->size))
+        return false; // out of range
+    *GET(frame, addr) = value;
+    return true;
 }
 
-int frame_free(void *frame)
+void frame_free(struct Frame *frame)
 {
-    free(((struct Frame*)frame)->ptr);
-    free(frame);
-    return E_OK;
+    if (frame != NULL)
+        munmap(frame, frame->size);
 }

@@ -9,23 +9,42 @@ int main()
 {
    CU_pSuite pSuite = NULL;
 
-   /* initialize the CUnit test registry */
+   // initialise cunit
    if (CUE_SUCCESS != CU_initialize_registry())
       return CU_get_error();
 
-   /* add a suite to the registry */
-   pSuite = CU_add_suite("StackSuite", sstack_init, sstack_clean);
+   // stack
+   pSuite = CU_add_suite("StackSuite", NULL, NULL);
    if (pSuite == NULL) 
    {
       CU_cleanup_registry();
       return CU_get_error();
    }
 
-   /* add the tests to the suite */
    if ((NULL == CU_add_test(pSuite, "test init and free", sstack_shouldInitAndFree)) ||
        (NULL == CU_add_test(pSuite, "test pushing", sstack_shouldPush)) ||
        (NULL == CU_add_test(pSuite, "test popping", sstack_shouldPop))  ||
-       (NULL == CU_add_test(pSuite, "test peeking", sstack_shouldPeek)))
+       (NULL == CU_add_test(pSuite, "test peeking", sstack_shouldPeek)) ||
+       (NULL == CU_add_test(pSuite, "test old data payloads preserved", sstack_shouldNotInterfereOnPush)) ||
+       (NULL == CU_add_test(pSuite, "test null pointer on pop", sstack_shouldPopIgnoreNull)) ||
+       (NULL == CU_add_test(pSuite, "test pop then push", sstack_shouldPopResume))
+       )
+   {
+      CU_cleanup_registry();
+      return CU_get_error();
+   }
+
+   // frame
+   pSuite = CU_add_suite("FrameSuite", NULL, NULL);
+   if (pSuite == NULL) 
+   {
+      CU_cleanup_registry();
+      return CU_get_error();
+   }
+
+   if ((NULL == CU_add_test(pSuite, "test init and free", sframe_shouldInitAndFree)) ||
+       (NULL == CU_add_test(pSuite, "test setting variable", sframe_shouldSetVar)) ||
+       (NULL == CU_add_test(pSuite, "test getting variable", sframe_shouldGetVar)))
    {
       CU_cleanup_registry();
       return CU_get_error();

@@ -5,7 +5,7 @@ TARGET = runtests
 
 SRCDIR = ../../src
 
-SOURCES = main.c stackSuite.c $(SRCDIR)/stack.c
+SOURCES = main.c stackSuite.c frameSuite.c $(SRCDIR)/stack.c $(SRCDIR)/frame.c
 OBJECTS = $(SOURCES:.c=.o)
 
 .PHONY: all clean

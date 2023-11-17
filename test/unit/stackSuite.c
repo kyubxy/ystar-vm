@@ -3,16 +3,6 @@
 #include "CUnit/Basic.h"
 #include "tests.h"
 
-int sstack_init(void)
-{
-    return 0;
-}
-
-int sstack_clean(void)
-{
-    return 0;
-}
-
 // stack should be able to initalise
 void sstack_shouldInitAndFree(void)
 {
@@ -97,4 +87,5 @@ void sstack_shouldPeek(void)
 }
 
 // TODO: whitebox tests
+
 

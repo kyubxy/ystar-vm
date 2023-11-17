@@ -2,8 +2,13 @@
 #define FRAME_H
 
 #include <stdint.h>
+#include <stdbool.h>
+#include <stddef.h>
 
 #define K_FRAMESIZE 8
+
+typedef uint8_t ybyte;   // 1 byte
+typedef uint64_t ylong;  // 8 bytes
 
 // we'll use variable size entries in a frame
 // might experiment later with paging inside of frames
@@ -11,13 +16,15 @@
 
 struct Frame
 {
-    uint32_t returnaddr;
-    uint32_t *ptr;
+    ylong LR; // link register
+    size_t size;
+    void *payload;
 };
 
-int frame_init(struct Frame *frame_o, uint32_t retAddr);
-int frame_get_var(struct Frame *frame, int addr, uint32_t *dest);
-int frame_set_var(struct Frame *frame, int addr, uint32_t value);
-int frame_free(void *frame);
+// returns true on success
+bool frame_init(struct Frame *frame_r, size_t size, ylong instlinkaddr);
+uint8_t frame_get_var(struct Frame *frame, ylong addr);
+bool frame_set_var(struct Frame *frame, ylong addr, ybyte value);
+void frame_free(struct Frame *frame);
 
 #endif /* FRAME_H */

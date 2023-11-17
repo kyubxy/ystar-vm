@@ -37,7 +37,8 @@ struct Stack *stack_init(size_t T_size, size_t stackSize)
 // returns the next free memory block on the stack
 void *stack_push(struct Stack *stack)
 {
-    if ((size_t)stack->SP >= stack->ssize - sizeof(struct Stack))
+    if (stack == NULL || 
+        (size_t)stack->SP >= stack->ssize - sizeof(struct Stack))
     {
         // stack is full
         return NULL;
@@ -55,7 +56,8 @@ int stack_pop(struct Stack *stack, void *dest)
 {
     if (stack->SP == 0)
         return 0;
-    memcpy(dest, get_current_block(stack), stack->T_size);
+    if (dest != NULL)
+        memcpy(dest, get_current_block(stack), stack->T_size);
     stack->SP -= stack->T_size;
 }
 
@@ -63,17 +65,22 @@ int stack_pop(struct Stack *stack, void *dest)
 // unlike pop, peeking means the stack still owns the data
 void *stack_peek(struct Stack *stack)
 {
+    if (stack == NULL)
+        return NULL;
     return get_current_block(stack);
 }
 
 // get total number of items currently in stack
 int stack_count(struct Stack *stack)
 {
+    if (stack == NULL)
+        return -1;
     return (size_t)stack->SP / stack->T_size;
 }
 
 // free the stack 
 void stack_free(struct Stack *stack)
 {
-    munmap(stack, stack->ssize);
+    if (stack != NULL)
+        munmap(stack, stack->ssize);
 }
