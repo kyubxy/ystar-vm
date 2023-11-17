@@ -7,6 +7,7 @@
 struct Stack
 {
     size_t T_size;  // size of each block
+    size_t ssize;   // total size of the stack
     void *SP;       // pointer to the end of the topmost block
 };
 
@@ -24,7 +25,8 @@ void *stack_push(struct Stack *stack);
 // remove topmost item
 // popping from the stack means the stack *no longer owns
 // the data*
-void stack_pop(struct Stack *stack, void *dest);
+// returns true if successful, false if stack is empty
+int stack_pop(struct Stack *stack, void *dest);
 
 // acquire topmost item
 // unlike pop, peeking means the stack still owns the data
@@ -34,6 +36,6 @@ void *stack_peek(struct Stack *stack);
 int stack_count(struct Stack *stack);
 
 // free the stack and its children elements
-int stack_free(struct Stack *stack);
+void stack_free(struct Stack *stack);
 
 #endif /* STACK_H */
