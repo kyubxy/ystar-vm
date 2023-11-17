@@ -1,7 +1,7 @@
 #include "CUnit/Basic.h"
 #include <cpu.h>
 
-void scpu_shouldInitRight(void)
+void scpu_shouldInitFree(void)
 {
 
 }

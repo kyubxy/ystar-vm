@@ -1,9 +1,9 @@
 CC = gcc
-CFLAGS = -I../../src
+CFLAGS = -I../src
 LIBS = -lcunit
 TARGET = runtests
 
-SRCDIR = ../../src
+SRCDIR = ../src
 
 SOURCES = main.c stackSuite.c frameSuite.c $(SRCDIR)/stack.c $(SRCDIR)/frame.c
 OBJECTS = $(SOURCES:.c=.o)
