@@ -33,12 +33,33 @@ int cpu_init(struct CPU *cpu, uint32_t *program)
     return E_OK;
 }
 
+// represents one clock cycle of the CPU
 int cpu_step(struct CPU *cpu)
 {
     uint32_t opcode;
     int fet = instr_fetch(&opcode, cpu);
     if (fet != E_OK) return fet; 
     return instr_execute(opcode, cpu);
+}
+
+int fetch(struct CPU *cpu, uint32_t *opcode_r)
+{
+    *opcode_r = cpu->program[cpu->PC];
+    // TODO: PC inc is wrong
+    return E_OK;
+}
+
+int decode(struct CPU *cpu, uint32_t *opcode_r, instr inst)
+{
+
+    cpu->PC += table[*opcode_r].argc + 1;
+}
+
+int instr_execute(struct CPU *cpu, instr inst)
+{
+    // execute the instruction
+    return table[opcode]
+        .execute(cpu, cpu->program + cpu->PC);
 }
 
 int cpu_free(struct CPU *cpu)

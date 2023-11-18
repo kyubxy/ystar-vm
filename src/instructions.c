@@ -145,18 +145,3 @@ Instr table[] = {
     { "ADD",  0, &add },
     { "HALT", 0, &halt },
 };
-
-int instr_fetch(uint32_t *opcode_r, struct CPU *cpu)
-{
-    *opcode_r = cpu->program[cpu->PC];
-    // TODO: PC inc is wrong
-    cpu->PC += table[*opcode_r].argc + 1;
-    return E_OK;
-}
-
-int instr_execute(uint32_t opcode, struct CPU *cpu)
-{
-    // execute the instruction
-    return table[opcode]
-        .execute(cpu, cpu->program + cpu->PC);
-}

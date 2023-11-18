@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-
 # simply packs a file of numbers into a binary format
+
 import sys
 
 def main (argv):
